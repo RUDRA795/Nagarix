@@ -3,6 +3,7 @@ import './globals.css';
 import { NavBar } from '@/components/layout/NavBar';
 import { Footer } from '@/components/layout/Footer';
 import { ThemeProvider } from '@/lib/theme/ThemeContext';
+import { GlobalNagpur3DBackground } from '@/components/cinematic/GlobalNagpur3DBackground';
 
 export const metadata: Metadata = {
   title: {
@@ -54,8 +55,9 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeProvider>
+          <GlobalNagpur3DBackground />
           <NavBar />
-          <main className="page-wrapper">
+          <main className="page-wrapper" style={{ position: 'relative', zIndex: 1 }}>
             {children}
           </main>
           <Footer />

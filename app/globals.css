@@ -342,33 +342,44 @@ ul, ol { list-style: none; }
 .overflow-y-auto { overflow-y: auto; }
 
 /* ============================================================
-   CARD COMPONENTS
+   CARD COMPONENTS — GLASSMORPHISM & HOVER ELEVATION
    ============================================================ */
 .card {
   background: var(--bg-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-xl);
   padding: var(--space-6);
-  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  transition: all var(--transition-base);
 }
 
 .card:hover {
   border-color: var(--border-default);
   box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .card-elevated {
   background: var(--gradient-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-xl);
   padding: var(--space-6);
   box-shadow: var(--shadow-lg);
+  transition: all var(--transition-base);
+}
+
+.card-elevated:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-xl);
 }
 
 .glass {
-  background: rgba(15, 31, 61, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--bg-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-subtle);
 }
 
