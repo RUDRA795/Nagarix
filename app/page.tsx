@@ -14,6 +14,7 @@ const CAPABILITIES = [
     title: 'Multilingual AI Assistant',
     subtitle: 'Ask NagariX anything about Nagpur',
     desc: 'Converses natively in English, Hindi, Marathi, or Hinglish with live database tool grounding.',
+    href: '#ai-assistant',
   },
   {
     num: '02',
@@ -21,6 +22,7 @@ const CAPABILITIES = [
     title: 'Multimodal Vision Reporting',
     subtitle: 'Photo to ticket in seconds',
     desc: 'Gemini AI Vision inspects citizen photos, verifies civic severity, and assigns direct NMC departments.',
+    href: '/report',
   },
   {
     num: '03',
@@ -28,6 +30,7 @@ const CAPABILITIES = [
     title: 'Live Geospatial City GIS',
     subtitle: 'See civic patterns where they happen',
     desc: 'Interactive Google Maps with real-time severity pins, density heatmaps, and ward intelligence.',
+    href: '/map',
   },
   {
     num: '04',
@@ -35,6 +38,7 @@ const CAPABILITIES = [
     title: 'Municipal Command Center',
     subtitle: 'Executive intelligence for NMC',
     desc: 'Live KPI monitoring, 10-zone ingestion ranking, 14-day velocity analysis, and SLA breach tracking.',
+    href: '/dashboard',
   },
   {
     num: '05',
@@ -42,6 +46,7 @@ const CAPABILITIES = [
     title: 'AI City Copilot',
     subtitle: 'Natural language predictive analytics',
     desc: 'Decision-support intelligence to prioritize high-risk road voids and waterlogging hotspots.',
+    href: '/dashboard/copilot',
   },
 ];
 
@@ -158,15 +163,17 @@ export default function HomePage() {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'var(--space-5)' }}>
               {CAPABILITIES.map((c) => (
-                <div key={c.title} className="card" style={{ position: 'relative', overflow: 'hidden', padding: 'var(--space-6)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-3)' }}>
-                    <span style={{ fontSize: 28 }}>{c.icon}</span>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', fontWeight: 800, color: 'var(--text-muted)' }}>{c.num}</span>
+                <Link key={c.title} href={c.href} style={{ textDecoration: 'none' }}>
+                  <div className="card" style={{ position: 'relative', overflow: 'hidden', padding: 'var(--space-6)', height: '100%', cursor: 'pointer', transition: 'all 0.2s' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-3)' }}>
+                      <span style={{ fontSize: 28 }}>{c.icon}</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', fontWeight: 800, color: 'var(--text-muted)' }}>{c.num}</span>
+                    </div>
+                    <h3 style={{ fontWeight: 800, fontSize: 'var(--text-lg)', marginBottom: 2 }}>{c.title}</h3>
+                    <div style={{ fontSize: 'var(--text-xs)', color: 'var(--accent-orange)', fontWeight: 600, marginBottom: 'var(--space-2)' }}>{c.subtitle}</div>
+                    <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{c.desc}</p>
                   </div>
-                  <h3 style={{ fontWeight: 800, fontSize: 'var(--text-lg)', marginBottom: 2 }}>{c.title}</h3>
-                  <div style={{ fontSize: 'var(--text-xs)', color: 'var(--accent-orange)', fontWeight: 600, marginBottom: 'var(--space-2)' }}>{c.subtitle}</div>
-                  <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{c.desc}</p>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

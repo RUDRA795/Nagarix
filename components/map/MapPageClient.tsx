@@ -137,13 +137,21 @@ export function MapPageClient() {
     return () => clearInterval(interval);
   }, [fetchMapData]);
 
-  // ── 2. Check URL Query Parameters on Mount ────────────────
+  // ── 2. Comprehensive URL Query Navigation Contract ──────────
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      const ticketParam = params.get('ticketId');
+      const ticketParam = params.get('ticketId') || params.get('ticket') || params.get('issue');
       const zoneParam = params.get('zone');
+      const wardParam = params.get('ward');
       const severityParam = params.get('severity');
+      const statusParam = params.get('status');
+      const categoryParam = params.get('category');
+      const slaParam = params.get('slaBreach') || params.get('sla');
+      const priorityParam = params.get('priority');
+      const latParam = parseFloat(params.get('lat') || '');
+      const lngParam = parseFloat(params.get('lng') || '');
+      const zoomParam = parseInt(params.get('zoom') || '', 10);
 
       if (ticketParam) {
         setSearchQuery(ticketParam);
@@ -151,8 +159,32 @@ export function MapPageClient() {
       if (zoneParam && NAGPUR_ZONES.includes(zoneParam)) {
         setZoneFilter(zoneParam);
       }
+      if (wardParam) {
+        const wardNum = parseInt(wardParam, 10);
+        if (!isNaN(wardNum)) {
+          setSearchQuery(`Ward ${wardNum}`);
+        }
+      }
       if (severityParam) {
         setSeverityFilter(severityParam);
+      }
+      if (statusParam) {
+        setStatusFilter(statusParam);
+      }
+      if (categoryParam) {
+        setCategoryFilter(categoryParam);
+      }
+      if (slaParam === 'true') {
+        setSlaRiskMode(true);
+      }
+      if (priorityParam === 'true') {
+        setPriorityMode(true);
+      }
+
+      // If specific GPS lat/lng and zoom provided
+      if (!isNaN(latParam) && !isNaN(lngParam) && mapInstanceRef.current) {
+        mapInstanceRef.current.panTo({ lat: latParam, lng: lngParam });
+        mapInstanceRef.current.setZoom(zoomParam || 15);
       }
     }
   }, []);

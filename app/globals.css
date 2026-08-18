@@ -78,72 +78,72 @@ html.dark,
   --shadow-glow-lg: 0 0 40px rgba(249, 115, 22, 0.2);
 }
 
-/* ── LIGHT THEME (CLEAN CIVIC URBAN INTELLIGENCE) ────────── */
+/* ── LIGHT THEME (WARM IVORY / SAFFRON / URBAN INTELLIGENCE) ── */
 html.light,
 [data-theme="light"] {
   /* Core Colors */
-  --bg-primary:     #f7f8fa;
-  --bg-secondary:   #ffffff;
-  --bg-surface:     #ffffff;
-  --bg-elevated:    #f1f5f9;
-  --bg-hover:       #e2e8f0;
-  --bg-overlay:     rgba(247, 248, 250, 0.94);
+  --bg-primary:     #f7f4ee;
+  --bg-secondary:   #fdfbf7;
+  --bg-surface:     rgba(255, 255, 255, 0.82);
+  --bg-elevated:    #efeae1;
+  --bg-hover:       #e5ded2;
+  --bg-overlay:     rgba(247, 244, 238, 0.92);
 
-  /* Borders */
-  --border-subtle:  #e2e8f0;
-  --border-default: #cbd5e1;
-  --border-strong:  #94a3b8;
+  /* Borders with subtle Vidarbha warm amber tint */
+  --border-subtle:  rgba(234, 88, 12, 0.12);
+  --border-default: rgba(234, 88, 12, 0.22);
+  --border-strong:  rgba(234, 88, 12, 0.45);
 
   /* Nagpur Orange & Brand Accents */
   --accent-orange:     #ea580c;
   --accent-orange-dim: #c2410c;
-  --accent-orange-glow:rgba(234, 88, 12, 0.2);
-  --accent-blue:       #2563eb;
-  --accent-blue-dim:   #1d4ed8;
-  --accent-purple:     #7c3aed;
-  --accent-cyan:       #0891b2;
-  --accent-glow:       rgba(234, 88, 12, 0.15);
+  --accent-orange-glow:rgba(234, 88, 12, 0.25);
+  --accent-blue:       #1d4ed8;
+  --accent-blue-dim:   #1e40af;
+  --accent-purple:     #6d28d9;
+  --accent-cyan:       #0e7490;
+  --accent-glow:       rgba(234, 88, 12, 0.18);
 
   /* Text */
-  --text-primary:   #111827;
-  --text-secondary: #475569;
+  --text-primary:   #0f172a;
+  --text-secondary: #334155;
   --text-muted:     #64748b;
   --text-accent:    #ea580c;
   --text-inverse:   #ffffff;
 
   /* Status Colors */
-  --color-reported:        #2563eb;
-  --color-ai-verified:     #7c3aed;
-  --color-assigned:        #4f46e5;
-  --color-in-progress:     #d97706;
-  --color-resolved:        #059669;
-  --color-citizen-verified:#047857;
+  --color-reported:        #1d4ed8;
+  --color-ai-verified:     #6d28d9;
+  --color-assigned:        #4338ca;
+  --color-in-progress:     #b45309;
+  --color-resolved:        #047857;
+  --color-citizen-verified:#065f46;
 
   /* Severity Colors */
-  --color-critical: #dc2626;
-  --color-high:     #ea580c;
-  --color-medium:   #d97706;
-  --color-low:      #16a34a;
+  --color-critical: #b91c1c;
+  --color-high:     #c2410c;
+  --color-medium:   #b45309;
+  --color-low:      #15803d;
 
   /* Semantic */
-  --color-success:  #059669;
-  --color-warning:  #d97706;
-  --color-danger:   #dc2626;
-  --color-info:     #2563eb;
+  --color-success:  #047857;
+  --color-warning:  #b45309;
+  --color-danger:   #b91c1c;
+  --color-info:     #1d4ed8;
 
-  /* Gradients */
+  /* Atmospheric Gradients */
   --gradient-brand:   linear-gradient(135deg, #ea580c 0%, #f97316 45%, #7c3aed 100%);
-  --gradient-surface: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-  --gradient-hero:    linear-gradient(135deg, #f7f8fa 0%, #ffffff 50%, #f1f5f9 100%);
-  --gradient-card:    linear-gradient(145deg, #ffffff, #f8fafc);
+  --gradient-surface: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(247,244,238,0.85) 100%);
+  --gradient-hero:    linear-gradient(135deg, #f7f4ee 0%, #fefcf9 40%, #faede2 100%);
+  --gradient-card:    linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(247, 244, 238, 0.8));
 
-  /* Shadows */
-  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md:  0 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-lg:  0 10px 25px rgba(0, 0, 0, 0.1);
-  --shadow-xl:  0 20px 40px rgba(0, 0, 0, 0.12);
-  --shadow-glow:0 0 20px rgba(234, 88, 12, 0.15);
-  --shadow-glow-lg: 0 0 35px rgba(234, 88, 12, 0.12);
+  /* Warm Shadows */
+  --shadow-sm:  0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(234, 88, 12, 0.03);
+  --shadow-md:  0 4px 14px rgba(15, 23, 42, 0.06), 0 2px 6px rgba(234, 88, 12, 0.04);
+  --shadow-lg:  0 10px 28px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(234, 88, 12, 0.06);
+  --shadow-xl:  0 20px 48px rgba(15, 23, 42, 0.1), 0 8px 24px rgba(234, 88, 12, 0.08);
+  --shadow-glow:0 0 24px rgba(234, 88, 12, 0.2);
+  --shadow-glow-lg: 0 0 44px rgba(234, 88, 12, 0.16);
 }
 
 /* ── GLOBAL LAYOUT & TYPOGRAPHY DIMENSIONS ───────────────── */

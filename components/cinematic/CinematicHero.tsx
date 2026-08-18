@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Sparkles, ArrowRight, Compass, Shield, Zap, MapPin } from 'lucide-react';
 import { useTheme } from '@/lib/theme/ThemeContext';
+import { Nagpur3DCityCanvas } from '@/components/cinematic/Nagpur3DCityCanvas';
 
 interface CinematicHeroProps {
   onEnterApp: () => void;
@@ -136,6 +137,9 @@ export function CinematicHero({ onEnterApp }: CinematicHeroProps) {
             pointerEvents: 'none',
           }}
         />
+
+        {/* 3D Stylized Nagpur Digital City Visualization Canvas */}
+        <Nagpur3DCityCanvas interactive={true} />
 
         {/* Subtle City Grid Texture */}
         <div
