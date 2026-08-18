@@ -1,4 +1,4 @@
-import { google } from '@ai-sdk/google';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { streamText, isStepCount } from 'ai';
 import { civicTools } from '@/lib/ai/tools';
 import { NAGARIX_SYSTEM_PROMPT } from '@/lib/ai/prompts';
@@ -41,13 +41,13 @@ export async function POST(req: Request) {
       }
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
-    const modelName = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    const modelName = process.env.GEMINI_MODEL || 'gemini-3.6-flash';
 
     // If Gemini key is available, attempt full online generation with tools
     if (apiKey) {
       try {
-        // Take recent conversation context (last 8 messages)
+        const google = createGoogleGenerativeAI({ apiKey });
         const recentMessages = messages.slice(-8);
 
         const result = streamText({
@@ -80,7 +80,6 @@ export async function POST(req: Request) {
         });
 
         const streamResponse = result.toTextStreamResponse();
-        // Add header to signify live Gemini response
         const headers = new Headers(streamResponse.headers);
         headers.set('X-AI-Source', 'gemini');
         headers.set('X-AI-Model', modelName);
@@ -124,13 +123,11 @@ export async function POST(req: Request) {
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {
-        // Split text into words to simulate streaming
         const words = fallbackResult.text.split(' ');
         for (let i = 0; i < words.length; i++) {
           const chunk = words[i] + (i < words.length - 1 ? ' ' : '');
           controller.enqueue(encoder.encode(chunk));
-          // small artificial delay for smooth delivery
-          await new Promise(r => setTimeout(r, 18));
+          await new Promise(r => setTimeout(r, 16));
         }
         controller.close();
       },

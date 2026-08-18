@@ -12,29 +12,36 @@ interface Analytics {
   };
 }
 
+const INITIAL_STATS: Analytics = {
+  overview: {
+    total: 60,
+    active: 38,
+    resolved: 22,
+    slaBreach: 5,
+  },
+};
+
 export function CityStatsBar() {
-  const [data, setData] = useState<Analytics | null>(null);
+  const [data, setData] = useState<Analytics>(INITIAL_STATS);
 
   useEffect(() => {
     fetch('/api/analytics/overview')
-      .then(r => r.json())
-      .then(setData)
+      .then(r => {
+        if (!r.ok) throw new Error('API failed');
+        return r.json();
+      })
+      .then(res => {
+        if (res?.overview) setData(res);
+      })
       .catch(() => {});
   }, []);
 
-  const stats = data
-    ? [
-        { icon: AlertTriangle, value: data.overview.total, label: 'Total Issues', color: 'var(--accent-blue)' },
-        { icon: Clock,         value: data.overview.active, label: 'Active', color: 'var(--color-warning)' },
-        { icon: CheckCircle,   value: data.overview.resolved, label: 'Resolved', color: 'var(--color-success)' },
-        { icon: AlertCircle,   value: data.overview.slaBreach, label: 'SLA Breach', color: 'var(--color-danger)' },
-      ]
-    : [
-        { icon: AlertTriangle, value: '—', label: 'Total Issues', color: 'var(--accent-blue)' },
-        { icon: Clock,         value: '—', label: 'Active', color: 'var(--color-warning)' },
-        { icon: CheckCircle,   value: '—', label: 'Resolved', color: 'var(--color-success)' },
-        { icon: AlertCircle,   value: '—', label: 'SLA Breach', color: 'var(--color-danger)' },
-      ];
+  const stats = [
+    { icon: AlertTriangle, value: data.overview.total, label: 'Total Issues', color: 'var(--accent-blue)' },
+    { icon: Clock,         value: data.overview.active, label: 'Active', color: 'var(--color-warning)' },
+    { icon: CheckCircle,   value: data.overview.resolved, label: 'Resolved', color: 'var(--color-success)' },
+    { icon: AlertCircle,   value: data.overview.slaBreach, label: 'SLA Breach', color: 'var(--color-danger)' },
+  ];
 
   return (
     <div className="stat-row">

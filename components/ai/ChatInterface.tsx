@@ -154,9 +154,9 @@ export function ChatInterface({
               display: 'inline-block',
             }} />
             {mode === 'online' ? (
-              <span>Multilingual · Gemini AI · Live Tools</span>
+              <span>● Gemini AI — Online (Live Tools)</span>
             ) : (
-              <span>⚡ Offline SQLite Engine</span>
+              <span>⚡ Offline Mode (Local SQLite)</span>
             )}
           </div>
         </div>
@@ -164,12 +164,12 @@ export function ChatInterface({
           {mode === 'online' ? (
             <>
               <Zap size={12} style={{ color: 'var(--accent-blue)' }} />
-              <span style={{ color: 'var(--color-success)', fontWeight: 600 }}>Online</span>
+              <span style={{ color: 'var(--color-success)', fontWeight: 600 }}>Gemini Online</span>
             </>
           ) : (
             <>
               <Database size={12} style={{ color: 'var(--color-warning)' }} />
-              <span style={{ color: 'var(--color-warning)', fontWeight: 600 }}>Local DB</span>
+              <span style={{ color: 'var(--color-warning)', fontWeight: 600 }}>Offline Mode</span>
             </>
           )}
         </div>
