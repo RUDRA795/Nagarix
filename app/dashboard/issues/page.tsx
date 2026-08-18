@@ -250,9 +250,23 @@ export default function IssuesManagementPage() {
                       {timeAgo(issue.createdAt)}
                     </td>
                     <td style={{ textAlign: 'right' }}>
-                      <Link href={`/track?id=${issue.ticketId}`} className="btn btn-secondary btn-sm" style={{ padding: '2px 8px', fontSize: '11px' }}>
-                        Track
-                      </Link>
+                      <div style={{ display: 'inline-flex', gap: 6 }}>
+                        <Link
+                          href={`/map?ticketId=${issue.ticketId}`}
+                          className="btn btn-ghost btn-sm"
+                          style={{ padding: '2px 8px', fontSize: '11px', color: 'var(--accent-orange)' }}
+                          title="View on City Map"
+                        >
+                          Map
+                        </Link>
+                        <Link
+                          href={`/track?id=${issue.ticketId}`}
+                          className="btn btn-secondary btn-sm"
+                          style={{ padding: '2px 8px', fontSize: '11px' }}
+                        >
+                          Track
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 ))}

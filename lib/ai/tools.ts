@@ -289,4 +289,68 @@ export const civicTools = {
       };
     },
   }),
+
+  get_recurring_problems: tool({
+    description: 'Get detected recurring civic problems in Nagpur where repeated complaints occur in the same location over time.',
+    inputSchema: z.object({}),
+    execute: async () => {
+      const { getRecurringProblems } = await import('@/lib/analytics/spatialEngine');
+      const recurring = await getRecurringProblems();
+      return {
+        source: 'demo',
+        totalRecurringPatterns: recurring.length,
+        recurringPatterns: recurring.slice(0, 5),
+        mapLink: '/map?clusters=true',
+      };
+    },
+  }),
+
+  get_incident_clusters: tool({
+    description: 'Get active spatial incident clusters where multiple civic issues are clustered within 600m in Nagpur.',
+    inputSchema: z.object({}),
+    execute: async () => {
+      const { getSpatialClusters } = await import('@/lib/analytics/spatialEngine');
+      const clusters = await getSpatialClusters();
+      return {
+        source: 'demo',
+        totalIncidentClusters: clusters.length,
+        topClusters: clusters.slice(0, 5),
+        mapLink: '/map?clusters=true',
+      };
+    },
+  }),
+
+  get_cross_department_conflicts: tool({
+    description: 'Detect locations where multiple municipal departments (Roads, Water, Drainage) have overlapping issues in the same area.',
+    inputSchema: z.object({}),
+    execute: async () => {
+      const { getCrossDeptConflicts } = await import('@/lib/analytics/spatialEngine');
+      const conflicts = await getCrossDeptConflicts();
+      return {
+        source: 'demo',
+        totalConflicts: conflicts.length,
+        conflicts: conflicts.slice(0, 5),
+        recommendation: 'Coordinate joint municipal site inspections before road resurfacing.',
+      };
+    },
+  }),
+
+  get_civic_health_index: tool({
+    description: 'Get the official NagariX Civic Health Index (0-100) for Nagpur city and sector breakdowns (Roads, Water, Drainage, Waste, Lighting).',
+    inputSchema: z.object({}),
+    execute: async () => {
+      const { getCityHealthIndex } = await import('@/lib/analytics/healthScore');
+      const health = await getCityHealthIndex();
+      return {
+        source: 'demo',
+        overallScore: health.overallScore,
+        status: health.status,
+        cityResolutionRate: `${health.cityResolutionRate}%`,
+        activeIssues: health.activeIssues,
+        dimensions: health.dimensions,
+        topPerformingWards: health.wardRankings.slice(0, 3).map(w => `Ward ${w.wardNumber} (${w.score}/100)`),
+        lowestPerformingWards: health.wardRankings.slice(-3).map(w => `Ward ${w.wardNumber} (${w.score}/100)`),
+      };
+    },
+  }),
 };

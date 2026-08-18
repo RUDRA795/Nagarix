@@ -47,20 +47,20 @@ export async function processOfflineFallback(message: string): Promise<FallbackR
     const latestTimeline = issue.timeline[0]?.note || 'In system';
     if (lang === 'marathi') {
       return {
-        text: `📌 **तक्रार ${issue.ticketId} तपशील (ऑफलाइन मोड)**:\n• **शीर्षक**: ${issue.title}\n• **स्थिती**: ${issue.status}\n• **श्रेणी**: ${issue.category}\n• **वॉर्ड**: ${issue.wardNumber || issue.zone || 'नागपूर'}\n• **अद्यतन**: ${latestTimeline}`,
+        text: `📌 **तक्रार ${issue.ticketId} तपशील (ऑफलाइन मोड)**:\n• **शीर्षक**: ${issue.title}\n• **स्थिती**: ${issue.status}\n• **श्रेणी**: ${issue.category}\n• **वॉर्ड**: ${issue.wardNumber || issue.zone || 'नागपूर'}\n• **अद्यतन**: ${latestTimeline}\n\n[📍 नकाशावर तक्रार पहा](/map?ticketId=${issue.ticketId})`,
         source: 'offline-sqlite',
         intent: 'ticket_lookup',
       };
     }
     if (lang === 'hindi' || lang === 'hinglish') {
       return {
-        text: `📌 **शिकायत ${issue.ticketId} की जानकारी (Offline Mode)**:\n• **Title**: ${issue.title}\n• **Status**: ${issue.status}\n• **Category**: ${issue.category}\n• **Ward/Zone**: ${issue.wardNumber || issue.zone || 'Nagpur'}\n• **Latest Update**: ${latestTimeline}`,
+        text: `📌 **शिकायत ${issue.ticketId} की जानकारी (Offline Mode)**:\n• **Title**: ${issue.title}\n• **Status**: ${issue.status}\n• **Category**: ${issue.category}\n• **Ward/Zone**: ${issue.wardNumber || issue.zone || 'Nagpur'}\n• **Latest Update**: ${latestTimeline}\n\n[📍 मैप पर शिकायत देखें](/map?ticketId=${issue.ticketId})`,
         source: 'offline-sqlite',
         intent: 'ticket_lookup',
       };
     }
     return {
-      text: `📌 **Complaint Details for ${issue.ticketId}** *(Offline SQLite Mode)*:\n• **Title**: ${issue.title}\n• **Status**: **${issue.status}**\n• **Severity**: ${issue.severity}\n• **Category**: ${issue.category}\n• **Location**: ${issue.locality || issue.wardName || issue.zone || 'Nagpur'}\n• **Department**: ${issue.department || 'NMC'}\n• **Latest Update**: ${latestTimeline}`,
+      text: `📌 **Complaint Details for ${issue.ticketId}** *(Offline SQLite Mode)*:\n• **Title**: ${issue.title}\n• **Status**: **${issue.status}**\n• **Severity**: ${issue.severity}\n• **Category**: ${issue.category}\n• **Location**: ${issue.locality || issue.wardName || issue.zone || 'Nagpur'}\n• **Department**: ${issue.department || 'NMC'}\n• **Latest Update**: ${latestTimeline}\n\n[📍 View Ticket on Map](/map?ticketId=${issue.ticketId})`,
       source: 'offline-sqlite',
       intent: 'ticket_lookup',
     };
@@ -87,26 +87,90 @@ export async function processOfflineFallback(message: string): Promise<FallbackR
 
     if (lang === 'marathi') {
       return {
-        text: `📊 **वॉर्ड क्र. ${wardNumber} (${ward?.wardName || 'नागपूर'}) आकडेवारी (ऑफलाइन मोड)**:\n• **एकूण तक्रारी**: ${count}\n• **सक्रिय तक्रारी**: ${active}\n• **निवारण झालेल्या**: ${resolved}\n• **अति-तातडीच्या (Critical)**: ${criticalCount}\n\n*माहिती स्थानिक डेटाबेसमधून मिळवली आहे.*`,
+        text: `📊 **वॉर्ड क्र. ${wardNumber} (${ward?.wardName || 'नागपूर'}) आकडेवारी (ऑफलाइन मोड)**:\n• **एकूण तक्रारी**: ${count}\n• **सक्रिय तक्रारी**: ${active}\n• **निवारण झालेल्या**: ${resolved}\n• **अति-तातडीच्या (Critical)**: ${criticalCount}\n\n[📍 वॉर्ड क्र. ${wardNumber} नकाशावर पहा](/map?ward=${wardNumber})`,
         source: 'offline-sqlite',
         intent: 'ward_stats',
       };
     }
     if (lang === 'hindi' || lang === 'hinglish') {
       return {
-        text: `📊 **Ward No. ${wardNumber} (${ward?.wardName || 'Nagpur'}) की स्थिति (Offline Mode)**:\n• **Total Complaints**: ${count}\n• **Active Issues**: ${active}\n• **Resolved**: ${resolved}\n• **Critical/Urgent**: ${criticalCount}\n\n*यह डेटा स्थानीय SQLite डेटाबेस से लिया गया है।*`,
+        text: `📊 **Ward No. ${wardNumber} (${ward?.wardName || 'Nagpur'}) की स्थिति (Offline Mode)**:\n• **Total Complaints**: ${count}\n• **Active Issues**: ${active}\n• **Resolved**: ${resolved}\n• **Critical/Urgent**: ${criticalCount}\n\n[📍 वार्ड ${wardNumber} मैप पर देखें](/map?ward=${wardNumber})`,
         source: 'offline-sqlite',
         intent: 'ward_stats',
       };
     }
     return {
-      text: `📊 **Ward ${wardNumber} (${ward?.wardName || 'Nagpur'}) Statistics** *(Offline SQLite Mode)*:\n• **Total Recorded Issues**: ${count}\n• **Currently Active**: ${active}\n• **Resolved**: ${resolved}\n• **Critical Severity**: ${criticalCount}\n\n*Queried directly from local Nagpur SQLite database.*`,
+      text: `📊 **Ward ${wardNumber} (${ward?.wardName || 'Nagpur'}) Statistics** *(Offline SQLite Mode)*:\n• **Total Recorded Issues**: ${count}\n• **Currently Active**: ${active}\n• **Resolved**: ${resolved}\n• **Critical Severity**: ${criticalCount}\n\n[📍 Inspect Ward ${wardNumber} on Map](/map?ward=${wardNumber})`,
       source: 'offline-sqlite',
       intent: 'ward_stats',
     };
   }
 
-  // 3. Critical issues / Priority recommendations
+  // 3. Category search (e.g. pothole, garbage, drainage, water)
+  const catKeywords: Record<string, string> = {
+    'pothole': 'Road/Pothole',
+    'road': 'Road/Pothole',
+    'sadak': 'Road/Pothole',
+    'rasta': 'Road/Pothole',
+    'रस्ता': 'Road/Pothole',
+    'सड़क': 'Road/Pothole',
+    'garbage': 'Garbage',
+    'kachra': 'Garbage',
+    'कचरा': 'Garbage',
+    'waste': 'Garbage',
+    'drainage': 'Drainage',
+    'drain': 'Drainage',
+    'nali': 'Drainage',
+    'नाली': 'Drainage',
+    'gutter': 'Drainage',
+    'water': 'Water Supply',
+    'pani': 'Water Supply',
+    'पाणी': 'Water Supply',
+    'पानी': 'Water Supply',
+    'streetlight': 'Streetlight',
+    'light': 'Streetlight',
+    'बिजली': 'Streetlight',
+    'दिवा': 'Streetlight',
+  };
+
+  for (const [kw, category] of Object.entries(catKeywords)) {
+    if (lower.includes(kw)) {
+      const [total, critical, recent] = await Promise.all([
+        prisma.civicIssue.count({ where: { category } }),
+        prisma.civicIssue.count({ where: { category, severity: 'Critical' } }),
+        prisma.civicIssue.findMany({
+          where: { category },
+          orderBy: { createdAt: 'desc' },
+          take: 3,
+          select: { ticketId: true, title: true, zone: true, severity: true },
+        }),
+      ]);
+
+      const issueList = recent.map(r => `• \`${r.ticketId}\` (${r.severity}): ${r.title} [📍 Map](/map?ticketId=${r.ticketId})`).join('\n');
+
+      if (lang === 'marathi') {
+        return {
+          text: `🔍 **${category} तक्रार स्थिती (ऑफलाइन मोड)**:\n• **एकूण तक्रारी**: ${total}\n• **गंभीर (Critical)**: ${critical}\n\n**नुकत्याच आलेल्या तक्रारी**:\n${issueList}\n\n[📍 सर्व ${category} तक्रारी नकाशावर पहा](/map?category=${encodeURIComponent(category)})`,
+          source: 'offline-sqlite',
+          intent: 'category_stats',
+        };
+      }
+      if (lang === 'hindi' || lang === 'hinglish') {
+        return {
+          text: `🔍 **${category} संबंधित शिकायतें (Offline Mode)**:\n• **Total Issues**: ${total}\n• **Critical**: ${critical}\n\n**हाल ही की शिकायतें**:\n${issueList}\n\n[📍 सभी ${category} मैप पर देखें](/map?category=${encodeURIComponent(category)})`,
+          source: 'offline-sqlite',
+          intent: 'category_stats',
+        };
+      }
+      return {
+        text: `🔍 **${category} Civic Issues Overview** *(Offline SQLite Mode)*:\n• **Total Issues**: ${total}\n• **Critical Severity**: ${critical}\n\n**Recent Complaints**:\n${issueList}\n\n[📍 View All ${category} on City Map](/map?category=${encodeURIComponent(category)})`,
+        source: 'offline-sqlite',
+        intent: 'category_stats',
+      };
+    }
+  }
+
+  // 4. Critical issues / Priority recommendations
   if (lower.includes('critical') || lower.includes('priority') || lower.includes('sla') || lower.includes('urgent') || lower.includes('तातडी') || lower.includes('जरूरी')) {
     const criticalList = await prisma.civicIssue.findMany({
       where: { severity: 'Critical', status: { notIn: ['Resolved', 'Citizen_Verified'] } },

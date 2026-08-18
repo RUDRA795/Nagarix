@@ -108,6 +108,13 @@ export function MapPageClient() {
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
+  // Phase 3 Spatial Intelligence Layers
+  const [showClusters, setShowClusters] = useState(false);
+  const [spatialClusters, setSpatialClusters] = useState<any[]>([]);
+  const [showRadar, setShowRadar] = useState(false);
+  const [radarIssues, setRadarIssues] = useState<any[]>([]);
+  const [radarLoading, setRadarLoading] = useState(false);
+
   // ── 1. Fetch All Issues from DB ─────────────────────────────
   const fetchMapData = useCallback(async () => {
     try {
@@ -500,23 +507,54 @@ export function MapPageClient() {
     setSelectedIssue(null);
   };
 
-  // Geolocation Locate Me
-  const handleLocateMe = () => {
+  // Geolocation Locate Me & Civic Radar Near Me
+  const handleCivicRadar = () => {
     if (!navigator.geolocation) {
       alert('Geolocation is not supported by your browser.');
       return;
     }
 
-    navigator.geolocation.getCurrentPosition(pos => {
+    setRadarLoading(true);
+    setShowRadar(true);
+
+    navigator.geolocation.getCurrentPosition(async pos => {
       const { latitude, longitude } = pos.coords;
       setUserLocation({ lat: latitude, lng: longitude });
+
       if (mapInstanceRef.current) {
         mapInstanceRef.current.panTo({ lat: latitude, lng: longitude });
         mapInstanceRef.current.setZoom(15);
       }
-    }, () => {
-      alert('GPS access denied or unavailable. Centered on Nagpur City.');
+
+      try {
+        const res = await fetch(`/api/analytics/spatial/near-me?lat=${latitude}&lng=${longitude}&radius=3.5`);
+        const json = await res.json();
+        setRadarIssues(json.nearbyIssues || []);
+      } catch {
+        // Fallback
+      } finally {
+        setRadarLoading(false);
+      }
+    }, async () => {
+      // Fallback to Nagpur Central
+      const res = await fetch('/api/analytics/spatial/near-me?radius=3.5');
+      const json = await res.json();
+      setRadarIssues(json.nearbyIssues || []);
+      setRadarLoading(false);
     });
+  };
+
+  const handleToggleClusters = async () => {
+    if (!showClusters && spatialClusters.length === 0) {
+      try {
+        const res = await fetch('/api/analytics/spatial/clusters');
+        const json = await res.json();
+        setSpatialClusters(json.clusters || []);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    setShowClusters(prev => !prev);
   };
 
   // Toggle Fullscreen
@@ -767,6 +805,17 @@ export function MapPageClient() {
           {showHeatmap ? 'Heatmap ON' : 'Heatmap'}
         </button>
 
+        {/* Spatial Incident Clusters Layer */}
+        <button
+          className={`btn btn-sm ${showClusters ? 'btn-primary' : 'btn-secondary'}`}
+          onClick={handleToggleClusters}
+          title="Toggle Urban Incident Clusters"
+          style={{ height: 32, fontSize: '11px', padding: '0 8px' }}
+        >
+          <AlertCircle size={12} />
+          {showClusters ? 'Clusters ON' : 'Clusters'}
+        </button>
+
         {/* SLA Risk Mode */}
         <button
           className={`btn btn-sm ${slaRiskMode ? 'btn-primary' : 'btn-secondary'}`}
@@ -778,14 +827,15 @@ export function MapPageClient() {
           {slaRiskMode ? 'SLA Risk ON' : 'SLA Risk'}
         </button>
 
-        {/* Locate Me */}
+        {/* Civic Radar / Locate Near Me */}
         <button
-          className="btn btn-secondary btn-sm"
-          onClick={handleLocateMe}
-          title="Center on My GPS Location"
-          style={{ height: 32, padding: '0 8px' }}
+          className={`btn btn-sm ${showRadar ? 'btn-primary' : 'btn-secondary'}`}
+          onClick={handleCivicRadar}
+          title="Detect civic complaints near your GPS location"
+          style={{ height: 32, fontSize: '11px', padding: '0 8px', color: 'var(--accent-orange)' }}
         >
           <Navigation size={13} />
+          <span>Near Me</span>
         </button>
 
         {/* Reset */}

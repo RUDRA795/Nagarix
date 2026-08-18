@@ -297,11 +297,13 @@ function MessageContent({ content }: { content: string }) {
   const formatted = content
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/`(.*?)`/g, '<code style="background:rgba(59,130,246,0.1);padding:2px 5px;border-radius:3px;font-family:var(--font-mono);font-size:0.85em">$1</code>')
+    .replace(/`(.*?)`/g, '<code style="background:rgba(59,130,246,0.12);padding:2px 6px;border-radius:4px;font-family:var(--font-mono);font-size:0.85em;color:var(--accent-blue)">$1</code>')
+    // Parse Markdown Links [Text](/map?...) into interactive action buttons
+    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" style="display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,rgba(249,115,22,0.15),rgba(234,88,12,0.1));border:1px solid rgba(249,115,22,0.3);border-radius:16px;padding:3px 10px;font-size:0.82em;font-weight:700;color:var(--accent-orange);text-decoration:none;margin:3px 2px;transition:all 0.15s ease" onmouseover="this.style.background=\'rgba(249,115,22,0.25)\'" onmouseout="this.style.background=\'linear-gradient(135deg,rgba(249,115,22,0.15),rgba(234,88,12,0.1))\'">$1 ↗</a>')
     .split('\n')
     .map((line, idx) => {
       if (line.startsWith('• ') || line.startsWith('* ')) {
-        return `<div key="${idx}" style="display:flex;gap:8px;margin:2px 0"><span style="color:var(--accent-blue);margin-top:2px">•</span><span>${line.substring(2)}</span></div>`;
+        return `<div key="${idx}" style="display:flex;gap:8px;margin:3px 0"><span style="color:var(--accent-orange);margin-top:1px">•</span><span>${line.substring(2)}</span></div>`;
       }
       return `<div key="${idx}" style="min-height:4px">${line}</div>`;
     })
