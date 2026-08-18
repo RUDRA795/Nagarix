@@ -305,11 +305,11 @@ export function ReportForm() {
 
         {/* Action Buttons */}
         <div className="flex gap-4 justify-center flex-wrap">
-          <Link href="/track" className="btn btn-secondary btn-lg">
+          <Link href={`/track?id=${result.ticketId}`} className="btn btn-secondary btn-lg">
             <CheckCircle size={18} />
-            Track Complaint
+            Track Complaint ({result.ticketId})
           </Link>
-          <Link href="/map" className="btn btn-secondary btn-lg">
+          <Link href={`/map?ticketId=${result.ticketId}`} className="btn btn-secondary btn-lg">
             <MapPin size={18} />
             View on City Map
           </Link>

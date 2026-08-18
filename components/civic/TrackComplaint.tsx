@@ -235,6 +235,24 @@ export function TrackComplaint() {
                 <div style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>{issue.resolutionNote}</div>
               </div>
             )}
+
+            {/* Quick Actions */}
+            <div style={{ marginTop: 'var(--space-5)', display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
+              {issue.latitude && issue.longitude ? (
+                <a
+                  href={`/map?ticketId=${issue.ticketId}`}
+                  className="btn btn-secondary btn-sm"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+                >
+                  <MapPin size={14} style={{ color: 'var(--accent-blue)' }} />
+                  View on City Map
+                </a>
+              ) : (
+                <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', alignSelf: 'center' }}>
+                  📍 Geocoded location unavailable
+                </span>
+              )}
+            </div>
           </div>
 
           {/* Timeline */}
