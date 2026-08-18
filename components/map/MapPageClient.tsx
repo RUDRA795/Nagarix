@@ -10,6 +10,7 @@ import {
   Minimize, RefreshCw, AlertCircle, FileText, Tag, MapPin
 } from 'lucide-react';
 import { CATEGORY_LIST, NAGPUR_ZONES, getCategoryIcon, getStatusLabel, timeAgo, formatDateTime } from '@/lib/utils';
+import { useTheme } from '@/lib/theme/ThemeContext';
 
 const NAGPUR_CENTER = { lat: 21.1458, lng: 79.0882 };
 
@@ -211,11 +212,34 @@ export function MapPageClient() {
       });
   }, []);
 
-  // Update map type dynamically
+  const { theme } = useTheme();
+
+  // Update map type and styles dynamically between Light and Dark themes
   useEffect(() => {
     if (!mapInstanceRef.current) return;
     mapInstanceRef.current.setMapTypeId(mapType);
-  }, [mapType]);
+
+    const darkMapStyle = [
+      { elementType: 'geometry', stylers: [{ color: '#1d2c4d' }] },
+      { elementType: 'labels.text.fill', stylers: [{ color: '#8ec3b9' }] },
+      { elementType: 'labels.text.stroke', stylers: [{ color: '#1a3646' }] },
+      { featureType: 'administrative.country', elementType: 'geometry.stroke', stylers: [{ color: '#4b6878' }] },
+      { featureType: 'administrative.province', elementType: 'geometry.stroke', stylers: [{ color: '#4b6878' }] },
+      { featureType: 'landscape.man_made', elementType: 'geometry.stroke', stylers: [{ color: '#334e87' }] },
+      { featureType: 'landscape.natural', elementType: 'geometry', stylers: [{ color: '#021019' }] },
+      { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#304a7d' }] },
+      { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#98a5be' }] },
+      { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#2c6675' }] },
+      { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#2f3948' }] },
+      { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0e1626' }] },
+    ];
+
+    if (mapType === 'roadmap') {
+      mapInstanceRef.current.setOptions({
+        styles: theme === 'dark' ? darkMapStyle : [],
+      });
+    }
+  }, [mapType, theme]);
 
   // ── 4. Filter Issues Client-Side for Instant Response ─────
   const filteredIssues = allIssues.filter(issue => {

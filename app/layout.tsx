@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { NavBar } from '@/components/layout/NavBar';
 import { Footer } from '@/components/layout/Footer';
+import { ThemeProvider } from '@/lib/theme/ThemeContext';
 
 export const metadata: Metadata = {
   title: {
@@ -30,18 +31,35 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#050b18" />
+        <meta name="theme-color" content="#050814" />
         <link rel="icon" href="/favicon.ico" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var saved = localStorage.getItem('nagarix-theme');
+                  var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') || 'dark';
+                  document.documentElement.classList.remove('dark', 'light');
+                  document.documentElement.classList.add(theme);
+                  document.documentElement.setAttribute('data-theme', theme);
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
       </head>
       <body>
-        <NavBar />
-        <main className="page-wrapper">
-          {children}
-        </main>
-        <Footer />
+        <ThemeProvider>
+          <NavBar />
+          <main className="page-wrapper">
+            {children}
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -6,35 +6,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* ============================================================
-   CSS VARIABLES — DESIGN TOKENS
+   CSS VARIABLES — DESIGN TOKENS (LIGHT & DARK THEMES)
    ============================================================ */
-:root {
+
+/* ── DARK THEME (DEFAULT / COMMAND CENTER) ───────────────── */
+:root,
+html.dark,
+[data-theme="dark"] {
   /* Core Colors */
-  --bg-primary:     #050b18;
-  --bg-secondary:   #0a1628;
+  --bg-primary:     #050814;
+  --bg-secondary:   #0a1020;
   --bg-surface:     #0f1f3d;
   --bg-elevated:    #162342;
   --bg-hover:       #1a2d52;
-  --bg-overlay:     rgba(5, 11, 24, 0.85);
+  --bg-overlay:     rgba(5, 8, 20, 0.88);
 
   /* Borders */
   --border-subtle:  rgba(59, 130, 246, 0.12);
-  --border-default: rgba(59, 130, 246, 0.2);
-  --border-strong:  rgba(59, 130, 246, 0.4);
+  --border-default: rgba(59, 130, 246, 0.22);
+  --border-strong:  rgba(59, 130, 246, 0.45);
 
-  /* Brand */
-  --accent-blue:    #3b82f6;
-  --accent-blue-dim:#2563eb;
-  --accent-purple:  #8b5cf6;
-  --accent-cyan:    #06b6d4;
-  --accent-glow:    rgba(59, 130, 246, 0.15);
+  /* Nagpur Orange & Brand Accents */
+  --accent-orange:     #f97316;
+  --accent-orange-dim: #ea580c;
+  --accent-orange-glow:rgba(249, 115, 22, 0.25);
+  --accent-blue:       #3b82f6;
+  --accent-blue-dim:   #2563eb;
+  --accent-purple:     #8b5cf6;
+  --accent-cyan:       #06b6d4;
+  --accent-glow:       rgba(59, 130, 246, 0.18);
 
   /* Text */
-  --text-primary:   #f0f4ff;
+  --text-primary:   #f8fafc;
   --text-secondary: #94a3b8;
-  --text-muted:     #4b5e7a;
-  --text-accent:    #60a5fa;
-  --text-inverse:   #050b18;
+  --text-muted:     #64748b;
+  --text-accent:    #f97316;
+  --text-inverse:   #050814;
 
   /* Status Colors */
   --color-reported:        #3b82f6;
@@ -57,19 +64,90 @@
   --color-info:     #3b82f6;
 
   /* Gradients */
-  --gradient-brand: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-  --gradient-surface: linear-gradient(180deg, #0f1f3d 0%, #0a1628 100%);
-  --gradient-hero: linear-gradient(135deg, #050b18 0%, #0a1628 50%, #0f1f3d 100%);
-  --gradient-card: linear-gradient(145deg, #0f1f3d, #0a1628);
+  --gradient-brand:   linear-gradient(135deg, #f97316 0%, #ea580c 45%, #8b5cf6 100%);
+  --gradient-surface: linear-gradient(180deg, #0f1f3d 0%, #0a1020 100%);
+  --gradient-hero:    linear-gradient(135deg, #050814 0%, #0a1020 50%, #0f1f3d 100%);
+  --gradient-card:    linear-gradient(145deg, #0f1f3d, #0a1020);
 
   /* Shadows */
-  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.5);
-  --shadow-md:  0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-lg:  0 8px 32px rgba(0, 0, 0, 0.5);
-  --shadow-xl:  0 16px 48px rgba(0, 0, 0, 0.6);
-  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.2);
-  --shadow-glow-lg: 0 0 40px rgba(59, 130, 246, 0.15);
+  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.6);
+  --shadow-md:  0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg:  0 8px 32px rgba(0, 0, 0, 0.6);
+  --shadow-xl:  0 16px 48px rgba(0, 0, 0, 0.7);
+  --shadow-glow:0 0 20px rgba(249, 115, 22, 0.25);
+  --shadow-glow-lg: 0 0 40px rgba(249, 115, 22, 0.2);
+}
 
+/* ── LIGHT THEME (CLEAN CIVIC URBAN INTELLIGENCE) ────────── */
+html.light,
+[data-theme="light"] {
+  /* Core Colors */
+  --bg-primary:     #f7f8fa;
+  --bg-secondary:   #ffffff;
+  --bg-surface:     #ffffff;
+  --bg-elevated:    #f1f5f9;
+  --bg-hover:       #e2e8f0;
+  --bg-overlay:     rgba(247, 248, 250, 0.94);
+
+  /* Borders */
+  --border-subtle:  #e2e8f0;
+  --border-default: #cbd5e1;
+  --border-strong:  #94a3b8;
+
+  /* Nagpur Orange & Brand Accents */
+  --accent-orange:     #ea580c;
+  --accent-orange-dim: #c2410c;
+  --accent-orange-glow:rgba(234, 88, 12, 0.2);
+  --accent-blue:       #2563eb;
+  --accent-blue-dim:   #1d4ed8;
+  --accent-purple:     #7c3aed;
+  --accent-cyan:       #0891b2;
+  --accent-glow:       rgba(234, 88, 12, 0.15);
+
+  /* Text */
+  --text-primary:   #111827;
+  --text-secondary: #475569;
+  --text-muted:     #64748b;
+  --text-accent:    #ea580c;
+  --text-inverse:   #ffffff;
+
+  /* Status Colors */
+  --color-reported:        #2563eb;
+  --color-ai-verified:     #7c3aed;
+  --color-assigned:        #4f46e5;
+  --color-in-progress:     #d97706;
+  --color-resolved:        #059669;
+  --color-citizen-verified:#047857;
+
+  /* Severity Colors */
+  --color-critical: #dc2626;
+  --color-high:     #ea580c;
+  --color-medium:   #d97706;
+  --color-low:      #16a34a;
+
+  /* Semantic */
+  --color-success:  #059669;
+  --color-warning:  #d97706;
+  --color-danger:   #dc2626;
+  --color-info:     #2563eb;
+
+  /* Gradients */
+  --gradient-brand:   linear-gradient(135deg, #ea580c 0%, #f97316 45%, #7c3aed 100%);
+  --gradient-surface: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  --gradient-hero:    linear-gradient(135deg, #f7f8fa 0%, #ffffff 50%, #f1f5f9 100%);
+  --gradient-card:    linear-gradient(145deg, #ffffff, #f8fafc);
+
+  /* Shadows */
+  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md:  0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg:  0 10px 25px rgba(0, 0, 0, 0.1);
+  --shadow-xl:  0 20px 40px rgba(0, 0, 0, 0.12);
+  --shadow-glow:0 0 20px rgba(234, 88, 12, 0.15);
+  --shadow-glow-lg: 0 0 35px rgba(234, 88, 12, 0.12);
+}
+
+/* ── GLOBAL LAYOUT & TYPOGRAPHY DIMENSIONS ───────────────── */
+:root {
   /* Spacing */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -116,6 +194,17 @@
   --nav-height: 64px;
   --sidebar-width: 260px;
   --max-content: 1280px;
+}
+
+/* Universal Smooth Theme Switching */
+html, body, .card, .card-elevated, .kpi-card, .nav, .footer,
+.form-input, .form-select, .form-textarea, .btn, .data-table,
+.timeline-content, .demo-banner {
+  transition: background-color var(--transition-base),
+              background var(--transition-base),
+              color var(--transition-base),
+              border-color var(--transition-base),
+              box-shadow var(--transition-base);
 }
 
 /* ============================================================
@@ -927,7 +1016,7 @@ ul, ol { list-style: none; }
 .hero-orb-1 {
   width: 600px;
   height: 600px;
-  background: rgba(59, 130, 246, 0.08);
+  background: var(--accent-orange-glow);
   top: -200px;
   right: -100px;
 }
@@ -935,7 +1024,7 @@ ul, ol { list-style: none; }
 .hero-orb-2 {
   width: 400px;
   height: 400px;
-  background: rgba(139, 92, 246, 0.06);
+  background: rgba(139, 92, 246, 0.08);
   bottom: -100px;
   left: -100px;
 }
@@ -944,9 +1033,10 @@ ul, ol { list-style: none; }
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+    linear-gradient(var(--border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
   background-size: 60px 60px;
+  opacity: 0.6;
 }
 
 .hero-content {
