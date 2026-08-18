@@ -73,17 +73,21 @@ export function DashboardClient() {
             Nagpur Civic Overview
           </h1>
         </div>
-        <div style={{ display: 'flex', gap: 'var(--space-3)', alignItems: 'center', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center', flexWrap: 'wrap' }}>
           <div className="demo-banner">
-            ⚠ Demo Data — Platform Preview
+            <span>⚠ Demo Platform</span>
           </div>
+          <Link href="/dashboard/issues" className="btn btn-secondary btn-sm">
+            <BarChart3 size={14} /> Issues Table
+          </Link>
+          <Link href="/dashboard/analytics" className="btn btn-secondary btn-sm">
+            <TrendingUp size={14} /> Analytics
+          </Link>
           <Link href="/dashboard/copilot" className="btn btn-secondary btn-sm">
-            <Zap size={14} />
-            AI Copilot
+            <Zap size={14} /> AI Copilot
           </Link>
           <Link href="/map" className="btn btn-primary btn-sm">
-            <Map size={14} />
-            City Map
+            <Map size={14} /> City Map
           </Link>
         </div>
       </div>

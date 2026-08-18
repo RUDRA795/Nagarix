@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, AlertCircle, CheckCircle, Clock, MapPin, Tag, Calendar, User, Building } from 'lucide-react';
 import { getCategoryIcon, getStatusLabel, formatDateTime, timeAgo } from '@/lib/utils';
 
@@ -58,15 +58,25 @@ export function TrackComplaint() {
   const [error, setError] = useState<string | null>(null);
   const [searched, setSearched] = useState(false);
 
-  async function handleSearch(e: React.FormEvent) {
-    e.preventDefault();
-    if (!query.trim()) return;
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const idParam = urlParams.get('id');
+      if (idParam) {
+        setQuery(idParam.toUpperCase());
+        performSearch(idParam.toUpperCase());
+      }
+    }
+  }, []);
+
+  async function performSearch(ticketId: string) {
+    if (!ticketId.trim()) return;
     setLoading(true);
     setError(null);
     setIssue(null);
     setSearched(true);
     try {
-      const res = await fetch(`/api/issues/${query.trim().toUpperCase()}`);
+      const res = await fetch(`/api/issues/${ticketId.trim().toUpperCase()}`);
       if (res.status === 404) {
         setError('No complaint found with this ticket ID. Please check and try again.');
       } else if (!res.ok) {
@@ -80,6 +90,11 @@ export function TrackComplaint() {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    performSearch(query);
   }
 
   const isResolved = issue?.status === 'Resolved' || issue?.status === 'Citizen_Verified';

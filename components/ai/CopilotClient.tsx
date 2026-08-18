@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { ChatInterface } from '@/components/ai/ChatInterface';
 import { Brain, Zap, MessageSquare } from 'lucide-react';
 
@@ -15,6 +16,8 @@ const EXAMPLE_QUERIES = [
 ];
 
 export function CopilotClient() {
+  const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
+
   return (
     <div className="container" style={{ padding: 'var(--space-8) var(--space-6)' }}>
       {/* Header */}
@@ -32,10 +35,10 @@ export function CopilotClient() {
         </div>
 
         <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
-          <div className="demo-banner"><span>⚠ Demo Data</span></div>
+          <div className="demo-banner"><span>⚠ Demo Platform</span></div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 'var(--text-xs)', color: 'var(--text-muted)', padding: '4px 10px', background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.2)', borderRadius: 'var(--radius-full)' }}>
             <Zap size={11} style={{ color: 'var(--accent-purple)' }} />
-            Powered by Gemini 2.0 Flash + NagariX Tools
+            Powered by Gemini 3.6 Flash + NagariX Grounded Tools
           </div>
         </div>
       </div>
@@ -44,7 +47,9 @@ export function CopilotClient() {
         {/* Chat */}
         <div>
           <ChatInterface
-            placeholder="Ask about Nagpur civic data... (English, Hindi, Marathi)"
+            key={selectedPrompt || 'default'}
+            suggestedPrompts={EXAMPLE_QUERIES}
+            placeholder="Ask about Nagpur civic data... (English, Hindi, Marathi, Hinglish)"
             initialMessage={`Welcome to the **NagariX AI City Copilot** — your municipal intelligence assistant.
 
 I can query live civic data to answer questions like:
@@ -53,9 +58,9 @@ I can query live civic data to answer questions like:
 • "Give me a city-wide status overview"
 • "Priority recommendations for tomorrow"
 
-All responses are based on **demo data**. I use NagariX tools to query the database — I never fabricate statistics.
+All responses are grounded in real database tools. I never fabricate statistics.
 
-What would you like to know?`}
+What would you like to query?`}
           />
         </div>
 
@@ -68,8 +73,10 @@ What would you like to know?`}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
               {EXAMPLE_QUERIES.map(q => (
-                <div
+                <button
                   key={q}
+                  type="button"
+                  onClick={() => setSelectedPrompt(q)}
                   style={{
                     padding: 'var(--space-3)',
                     background: 'var(--bg-secondary)',
@@ -80,18 +87,20 @@ What would you like to know?`}
                     cursor: 'pointer',
                     transition: 'all 0.15s',
                     lineHeight: 1.5,
+                    textAlign: 'left',
+                    width: '100%',
                   }}
                   onMouseEnter={e => {
-                    (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--accent-blue)';
-                    (e.currentTarget as HTMLDivElement).style.color = 'var(--text-primary)';
+                    e.currentTarget.style.borderColor = 'var(--accent-blue)';
+                    e.currentTarget.style.color = 'var(--text-primary)';
                   }}
                   onMouseLeave={e => {
-                    (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--border-subtle)';
-                    (e.currentTarget as HTMLDivElement).style.color = 'var(--text-secondary)';
+                    e.currentTarget.style.borderColor = 'var(--border-subtle)';
+                    e.currentTarget.style.color = 'var(--text-secondary)';
                   }}
                 >
                   {q}
-                </div>
+                </button>
               ))}
             </div>
           </div>
